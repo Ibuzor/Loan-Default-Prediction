@@ -20,6 +20,3 @@ desktop.ini
 .vscode/
 .idea/
 
-# Model/output artifacts (uncomment if you don't want these tracked)
-# *.pkl
-# *.joblib
