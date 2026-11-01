@@ -52,6 +52,7 @@ A RAG pipeline turns the top SHAP drivers into Regulation B adverse-action reaso
 
 ## Repo structure
 
+- 'docs/plots.png' - Supporting visuals for the results section in the README.md
 - `Loan_Default_Prediction.ipynb` — full analysis: EDA, modeling, evaluation,
   SHAP interpretability, and the adverse action notice generator
 - `hmeq.csv` — dataset
@@ -77,3 +78,7 @@ stood out."
 **Live Presentation:** "Good structure and flow, decent
 understanding of the solution, and positive notes on the fairness/ECOA angle
 and the GenAI adverse-action-notice feature."
+
+## Next steps
+
+Export the model to ONNX and serve it from a C# app with tests, CI and prediction logging (separate repo, in progress).
