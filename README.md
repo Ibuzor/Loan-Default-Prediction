@@ -1,3 +1,7 @@
+# MIT Professional Education - Applied AI & Data Science
+A Capstone project based on the domain - Practical Data Science/Classification.
+Scored 94/100
+
 # Home Equity Loan Default Prediction
 
 A binary classification model that predicts home equity loan default risk,
@@ -12,7 +16,7 @@ traceable and defensible under ECOA.
 
 ## Approach
 
-- **Data**: HMEQ (Home Equity) dataset — 5,960 loan records, ~20% default rate
+- **Data**: HMEQ (Home Equity) dataset — 5,960 loan records, ~20% default rate (HMEQ dataset provided with the MIT PE/Great Learning problem statement.)
 - **Models compared**: Logistic Regression (baseline), Decision Tree, Random
   Forest, Explainable Boosting Machine (EBM) and XGBoost (with monotonic constraints on key features for
   ECOA-defensibility)
@@ -26,10 +30,25 @@ traceable and defensible under ECOA.
   ECOA-compliant rejection reasons from SHAP output, grounded in Regulation B
   (12 CFR Part 1002 Appendix C) reason codes
 
-## Result
+## Results
 
-XGBoost (with monotonic constraints) is the recommended model, chosen for
-recall performance under the cost-asymmetry framing established above.
+Held-out test set: 1,788 applicants (30%, stratified), 357 defaulters. Recall on the default class was the primary metric, because missing a defaulter costs roughly 10x more than wrongly rejecting a good borrower.
+
+| Model | Precision | Recall | F1 | ROC-AUC |
+|---|---|---|---|---|
+| Logistic Regression | 0.510 | 0.695 | 0.588 | 0.838 |
+| Decision Tree (tuned) | 0.510 | 0.759 | 0.610 | 0.853 |
+| Random Forest | 0.744 | 0.739 | 0.742 | 0.940 |
+| **XGBoost (monotonic)** | 0.703 | **0.821** | **0.757** | 0.943 |
+| EBM (monotonic) | 0.689 | **0.821** | 0.749 | **0.945** |
+
+**XGBoost with monotonic constraints is the recommended model.** It catches 293 of 357 defaulters and has the best F1. The constraints keep its behaviour consistent with credit logic, which makes each decision easier to defend under ECOA.
+
+![SHAP summary](docs/shap_summary.png)
+
+`DEBTINC_missing` is the top driver, ahead of `DELINQ` and `CLAGE`. Not reporting your debt-to-income ratio predicts default better than the ratio itself.
+
+A RAG pipeline turns the top SHAP drivers into Regulation B adverse-action reasons. See the notebook for the cost analysis, EBM comparison, bias discussion and notice generator.
 
 ## Repo structure
 
@@ -44,32 +63,17 @@ recall performance under the cost-asymmetry framing established above.
 pip install -r requirements.txt
 jupyter notebook Loan_Default_Prediction.ipynb
 ```
+Optional: set ANTHROPIC_API_KEY to have an LLM write the adverse-action notices. Without it, the notebook uses a deterministic template.
 
 ## Limitations
 
-A full proxy-variable or disparate-impact bias audit is out of scope for this
-version and so therefore flagged as an open limitation rather than treated as solved.
+A full proxy-variable or disparate-impact bias audit is out of scope for this version, so it is flagged as an open limitation, not treated as solved.
 
-## Context
-
-Built as a capstone project for MIT Professional Education's Applied AI & Data
-Science program.
-
-## Graded Results
-
-**Final score: 94/100 (Grade Excellent)** - top 10% cutoff was 97
-
-| Assessment | Score |
-|---|---|
-| Milestone Submission | 20/20 |
-| Live Presentation | 34/40 |
-| Final Submission | 40/40 |
-
-**Instructor feedback (Final Submission):** "You have done an excellent job on the
+## Professor Feedbacks
+**Final Submission:** "You have done an excellent job on the
 overall assignment. I really liked the technical accuracy, and the explanation
 stood out."
 
-**Instructor feedback (Live Presentation):** "Good structure and flow, decent
+**Live Presentation:** "Good structure and flow, decent
 understanding of the solution, and positive notes on the fairness/ECOA angle
-and the GenAI adverse-action-notice feature. Tighten time
-management so the analysis section doesn't run long."
+and the GenAI adverse-action-notice feature."
