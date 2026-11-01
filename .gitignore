@@ -10,6 +10,8 @@ __pycache__/
 .venv/
 venv/
 env/
+.env
+.env.*
 
 # OS cruft
 .DS_Store
@@ -19,4 +21,3 @@ desktop.ini
 # Editors
 .vscode/
 .idea/
-
