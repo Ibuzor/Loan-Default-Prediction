@@ -42,7 +42,8 @@ Held-out test set: 1,788 applicants (30%, stratified), 357 defaulters. Recall on
 | **XGBoost (monotonic)** | 0.703 | **0.821** | **0.757** | 0.943 |
 | EBM (monotonic) | 0.689 | **0.821** | 0.749 | **0.945** |
 
-! [Model comparison] (docs/model_comparison.png)
+! [Model comparison](docs/model_comparison.png)
+
 **XGBoost with monotonic constraints is the recommended model.** It catches 293 of 357 defaulters and has the best F1. The constraints keep its behaviour consistent with credit logic, which makes each decision easier to defend under ECOA.
 
 ![SHAP summary](docs/shap_summary.png)
